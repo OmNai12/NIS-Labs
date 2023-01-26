@@ -1,39 +1,65 @@
 import MatrixGenrator
 import MatrixDisplay as ShowMatrix
+import MatrixOperation as MatrixOP
+
+
+def showEncryptedText(mat: list):
+    text = ""
+    for i in mat:
+        for j in i:
+            text += j
+
+    return text
+
+
+def HillCipherDecryption(keyMatrix, cipherText, matrixDimension):
+    inverseKeyMatrix = MatrixOP.inverseOfMatrix(keyMatrix, matrixDimension)
+    helperMat = MatrixOP.matrixMultiplication(
+        MatrixGenrator.valueMatrix(cipherText, matrixDimension), inverseKeyMatrix)
+    decrypetedText = showEncryptedText(helperMat)
+    return decrypetedText
 
 
 def HillCipherEncryption(pt: str, matrixDimension):
-    print("**************************************************\n")
+    print("\n\n**************************************************\n")
+    # Genration of the plain text matrix.
     print("Plain text matrix is as under :- ")
-    plainTextMatrix = MatrixGenrator.plainTextMatrixGenrator(
-        pt, matrixDimension)
+    plainTextMatrix = MatrixGenrator.valueMatrix(pt, matrixDimension)
     ShowMatrix.matrixDispalyFunction(plainTextMatrix)
     print()
-    # keyMatrix = MatrixGenrator.keyMatrixGenrator(matrixDimension)
-    keyMatrix = [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
-    print("Key matrix kenrated is as under :-")
+    # Genration of the key matrix.
+    keyMatrix = MatrixGenrator.keyMatrixGenrator(
+        matrixDimension, matrixDimension)
+    print("Key matrix genrated is as under :- ")
     ShowMatrix.matrixDispalyFunction(keyMatrix)
-    # ShowMatrix.matrixDispalyFunction(keyMatrix, matrixDimension)
-
-    pass
+    print()
+    # Getting the the cipher text.
+    cipherTextMatrix = MatrixOP.matrixMultiplication(
+        plainTextMatrix, keyMatrix)
+    cipherText = showEncryptedText(cipherTextMatrix)
+    print("**************************************************\n")
+    print("Encrypted text is as under :- ")
+    print(cipherText, "\n")
+    # Decryption of the cipher text.
+    decryText = HillCipherDecryption(keyMatrix, cipherText, matrixDimension)
+    print("Decrypted text is as under :- ")
+    print(decryText, "\n")
+    print("**************************************************\n")
 
 
 def refinedPlainText(pt: str):
-    gapPresentIndex = []
-    for i in range(len(pt)):
-        if pt[i] == " ":
-            gapPresentIndex.append(i)
-
-    newText = pt.replace(" ", "").upper()
-    return newText
+    # Removing the spaces in the string.
+    return pt.replace(" ", "").upper()
 
 
 def HillCipherFunction(pt):
-    newPlainText = refinedPlainText(plainText)
+    # Driver code of the hill cipher function.
+    newPlainText = refinedPlainText(pt)
     lengthOfText = len(newPlainText)
     if (lengthOfText % 2 == 0) and (lengthOfText % 3 == 0):
-        print("Encryption possible with any of the key matrix of 2*2 or 3*3.\n")
-        HillCipherEncryption(newPlainText, 3)
+        print("Encryption possible with both key matrix i.e. 2*2 or 3*3.\n")
+        dimOfKeyMatrix = input("Enter key matric of your choice :- ")
+        HillCipherEncryption(newPlainText, int(dimOfKeyMatrix))
     elif lengthOfText % 2 == 0:
         print("Encryption possible with 2*2 key matrix.")
         HillCipherEncryption(newPlainText, 2)
@@ -48,4 +74,4 @@ def HillCipherFunction(pt):
 
 if __name__ == "__main__":
     plainText = "pay more money"
-    print("In Main ", HillCipherFunction(plainText))
+    HillCipherFunction(plainText)

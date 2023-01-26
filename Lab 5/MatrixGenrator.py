@@ -1,7 +1,4 @@
-import random
-
-
-def plainTextMatrixGenrator(pt: str, n):
+def valueMatrix(pt: str, n):
     matrix = []
     k = 0
     rows = int(len(pt) / n)
@@ -15,17 +12,17 @@ def plainTextMatrixGenrator(pt: str, n):
     return matrix
 
 
-def keyMatrixGenrator(n):
-    matrix = []
-    for rows in range(n):
-        coloums = []
-        for j in range(n):
-            coloums.append(random.randint(0, 25))
-        matrix.append(coloums)
-    return matrix
+# def keyMatrixGenrator(n):
+#     matrix = []
+#     for rows in range(n):
+#         coloums = []
+#         for j in range(n):
+#             coloums.append(random.randint(0, 25))
+#         matrix.append(coloums)
+#     return matrix
 
-
-if __name__ == "__main__":
-    n = 3
-    # keyMatrixGenrator(n)
-    plainTextMatrixGenrator("PAYMOREMONEY", n)
+def keyMatrixGenrator(n, dim):
+    if dim == 2:
+        return [[7, 8], [11, 11]]
+    elif dim == 3:
+        return [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
